@@ -32,28 +32,27 @@ if(isset($_POST["signup-submit"])){
 		}
 		else{
 				$sql = "SELECT username from admin where username=?";
-				$stmt = mysqli_stmt_init($sql);
-				$stmt->bind_param("s", $firstname);
+				$stmt = $conn->prepare($sql);
+				/* $stmt->bind_param("s", $username); */
 				$stmt->execute();
-				$stmt->store_result();
-				$stmt -> num_rows;
+		/* 		$user = $stmt->fetch(); */
 
-				if(num_rows>0){
-						header("location: ../signup.php?error=usernametaken&username="."&email=".$email);
-						exit();
-				}
-				else{
-						$sql = "INSERT INTO admin(username,phone,email,password) values(?,?,?,?)";
-						$stmt = $conn->prepare($sql);
-						$hashPWd = password_hash($password,PASSWORD_DEFAULT);
-						$stmt->bind_param("ssss", $firstname,$phone,$email,$hashPWd);
-						$stmt->execute();
-						header("location: ../signup.php?signup=success");
-						exit();
-				}
+				/* if($user){ */
+				/* 		header("location: ../signup.php?error=usernametaken&username="."&email=".$email); */
+				/* 		exit(); */
+				/* } */
+				/* else{ */
+				/* 		$sql = "INSERT INTO admin(username,phone,email,password) values(?,?,?,?)"; */
+				/* 		$stmt = $conn->prepare($sql); */
+				/* 		$hashPWd = password_hash($password,PASSWORD_DEFAULT); */
+				/* 		$stmt->bind_param("ssss", $firstname,$phone,$email,$hashPWd); */
+				/* 		$stmt->execute(); */
+				/* 		header("location: ../signup.php?signup=success"); */
+				/* 		exit(); */
+				/* } */
 		}
 
 } 
 else{
-header("location:../signup.php")
+header("location:../signup.php");
 }
