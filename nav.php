@@ -4,6 +4,7 @@
 					<a href="index.php" class="brand-logo">Librise</a>
 					<ul id="nav-mobile" class="right hide-on-med-and-down">
 <?php
+echo "<li><a href='index.php'>Home</a></li>";
 if(isset($_SESSION['username'])){
 echo " <li><a href='addBook.php'>Add a Book</a></li> ";
 echo " <li><a href='addStudent.php'>Add Student</a></li> ";
