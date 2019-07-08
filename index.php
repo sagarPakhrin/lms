@@ -1,14 +1,6 @@
 <?php include("header.php"); ?>
+<?php include("nav.php"); ?>
 <div class="container">
-
-
-
-
-<p>Your are logged in</p>
-<p>Your are logged out</p>
-
-
-
 
 
 

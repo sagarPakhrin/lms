@@ -6,6 +6,28 @@ include('header.php');
 <div class="row">
 <center>
 	<h1> Register</h1> </center>
+<center>
+<?php
+if(isset($_GET['error'])){
+		if($_GET['error']=='emptyfields'){
+				echo "
+		     <span class='red-text text-darken-2'>Fill in all the fields</span>";
+		}
+		if($_GET['error']=='invalidmail'){
+				echo "
+		     <span class='red-text text-darken-2'>Please Enter a Valid Email</span>";
+		}
+		if($_GET['error']=='invalidusername'){
+				echo "
+		     <span class='red-text text-darken-2'>Please Enter a valid username</span>";
+		}
+		if($_GET['error']=='passwordCheck'){
+				echo "
+		     <span class='red-text text-darken-2'>Your Passwords Donot Match</span>";
+		}
+}
+?>
+</center>
 <form action="includes/signup.inc.php" method="POST" class="col s12">
  <div class="row">
 				<div class="input-field col s12">
@@ -33,10 +55,16 @@ include('header.php');
 </div>
 </div>
 </form>
+<div class="row">
+	<div class="col s12 right-align">
+<div style="padding-right:20px;">
+<span class="">Already Registered?</span>
+<a href="login.php">Login</a>
 </div>
 </div>
-
-
+</div>
+</div>
+</div>
 
 <?php
 include('footer.php');

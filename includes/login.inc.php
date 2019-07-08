@@ -30,7 +30,8 @@ if(isset($_POST['login-submit'])){
 								else if($pwdCheck == true){
 										session_start();
 										$_SESSION['username']=$username;
-										header("location: ../index.php");
+										$_SESSION['password']=$result['password'];
+										header("location: ../index.php?login=success");
 								}
 						}
 						else{
