@@ -10,29 +10,31 @@ if(isset($_POST['login-submit'])){
 				exit();
 		}
 		else{
-				$sql = "SELECT * admin WHERE username=? OR email=?";
-				if(!$conn->prepare($sql)){
+				$sql = "SELECT * from admin WHERE username=? OR email=?";
+				$stmt = $conn->prepare($sql);
+				if(!$stmt){
 						header("location: ../login.php?error=prepareError");
 						exit();
 				}
 				else{
 						$stmt->bind_param("ss",$username,$username);
 						$stmt->execute();
-						$stmt->bind_result($results);
-						$stmt->fetch_array(MYSQLI_ASSOC);
-						if($results){
+						$result = $stmt->get_result();
+						$result = $result->fetch_assoc();
+						if($result){
 								$pwdCheck = password_verify($password,$result['password']);
-								if($pwdCheck){
+								if(!$pwdCheck){
 										header("location: ../login.php?error=wrongpassword");
 										exit();
 								}
 								else if($pwdCheck == true){
 										session_start();
 										$_SESSION['username']=$username;
+										header("location: ../index.php");
 								}
 						}
 						else{
-								/* header("location: ../login.php?error=noUser"); */
+								header("location: ../login.php?error=noUser");
 								exit();
 						}
 				}
