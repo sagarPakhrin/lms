@@ -9,7 +9,7 @@ include('header.php');
 <form action="includes/signup.inc.php" method="POST" class="col s12">
  <div class="row">
 				<div class="input-field col s12">
-					<input id="username"name="username" type="text" class="validate">
+					<input id="username" name="username" type="text" class="validate">
 					<label for="username">Username</label>
 				</div>
 				<div class="input-field col s12">
