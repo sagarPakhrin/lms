@@ -26,7 +26,7 @@ if($result->num_rows>0){
 		echo "<p>".$row['description']."</p>";
 		echo "<div class='row right-align'>";
 		echo "<div class='col'>";
-		echo "<a href='./borrowbook.php' class='btn'>Borrow</a>";
+		echo "<a href='./borrowbook.php?id=".$row['id']."' class='btn'>Borrow</a>";
 		echo "</div>";
 		echo "<div class='col'>";
 		echo "<a href='./editbook.php?id=".$row['id']."' class='btn'>edit</a>";
