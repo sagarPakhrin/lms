@@ -19,7 +19,7 @@ if ($result->num_rows>0){
 		echo '				<p>'.$row['description'].'</p>';
 		echo '				</div>';
 		echo '				<div class="card-action">';
-		echo '				<a href="./bookdetail.php?id='.$row['id'].'">Burrow This Book</a>';
+		echo '				<a href="./bookdetail.php?id='.$row['id'].'">View Detail</a>';
 		echo '				</div>';
 		echo '				</div>';
 		echo '				</div>';

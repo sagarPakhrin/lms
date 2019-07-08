@@ -7,7 +7,7 @@ include("nav.php");
 </center>
  <div class="row">
 <div class="container">
-		<form class="col s12" method="POST" action="./includes/addBook.inc.php">
+		<form class="col s12" method="POST" action="./includes/addBook.inc.php" enctype="multipart/form-data">
 			<div class="row">
 				<div class="input-field col s6">
 					<input id="title" name="title" type="text" class="validate">
@@ -23,9 +23,11 @@ include("nav.php");
 				 <textarea id="textarea1" name="description" placeholder="Description" class="materialize-textarea" cols="10"></textarea>
 				</div>
 			</div>
-<div class="right-align">
-<button class="btn" name="addBook">Add</button>
-</div>
+		<div class="right-align">
+<input class="text" type="text" name="imageURL" value="">
+		<label for="imageURL" class="btn green">Upload Image</label>
+		<button class="btn" name="addBook">Add</button>
+		</div>
 		</form>
 	</div>
 </div>
