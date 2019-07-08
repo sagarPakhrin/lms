@@ -2,9 +2,10 @@
 $servername = "localhost";
 $dbUsername = "root";
 $dbPassword = "password";
+$dbName = 'ipproject';
 
 // Create connection
-$conn = new mysqli($servername, $dbUsername, $dbPassword);
+$conn = new mysqli($servername, $dbUsername, $dbPassword,$dbName);
 
 // Check connection
 if ($conn->connect_error) {
