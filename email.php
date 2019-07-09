@@ -24,6 +24,7 @@ include("nav.php");
           <label for="textarea1">Textarea</label>
         </div>
 <div class="right-align">
+		<a class="btn waves-effect waves-light" href="index.php">Cancel</a>
 		<button class="btn waves-effect waves-light" name="sendEmail">Send<i class="material-icons right">send</i></button>
 </div>
       </div>
