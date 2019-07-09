@@ -1,6 +1,9 @@
 <?php
 include("header.php");
 include("nav.php");
+if(!$_SESSION['username']){
+		header("location:./login.php");
+}
 ?>
 <center>
 	<h1>Add A Book</h1>
@@ -24,8 +27,15 @@ include("nav.php");
 				</div>
 			</div>
 		<div class="right-align">
-<input class="text" type="text" name="imageURL" value="">
-		<label for="imageURL" class="btn green">Upload Image</label>
+<div class="file-field input-field">
+			<div class="btn">
+				<span>Upload Cover Photo</span>
+				<input type="file" name="imageURL">
+			</div>
+			<div class="file-path-wrapper">
+				<input class="file-path validate" type="text">
+			</div>
+		</div>
 		<button class="btn" name="addBook">Add</button>
 		</div>
 		</form>

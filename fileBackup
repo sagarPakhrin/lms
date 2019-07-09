@@ -1,0 +1,17 @@
+		/* $target_dir = "uploads/"; */
+		/* $target_file = $target_dir . basename($_FILES["imageURL"]['name']); */
+		/* $uploadOK = 0; */
+		/* $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION)); */
+
+		/* $check = getimagesize($_FILES['imageURL']['tmp_name']); */
+
+		/* if(!$check){ */
+		/* 		header("location:../addBook.php?error=notanimage"); */
+		/* 		exit(); */
+		/* } */
+		/* elseif($_FILES['imageURL']["size"] > 500000){ */
+		/* 		header("location:../addBook.php?error=filetoolarge"); */
+		/* 		exit(); */
+		/* }else{ */
+		/* 		$uploadOK = 1; */
+		/* } */
