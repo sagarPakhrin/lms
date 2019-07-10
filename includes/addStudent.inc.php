@@ -1,14 +1,40 @@
 <?php
 require("dbh.inc.php");
 /* if(isset($_SESSION['username'])=='admin'){ */
-		if(isset($_GET['addStudent']))
-		{
-				echo $_SESSION['username'];
+if(isset($_POST['addStudent']))
+{
+		$f_name = $_POST['f_name'];
+		$l_name = $_POST['l_name'];
+		$email = $_POST['email'];
+		$phone = $_POST['phone'];
+
+		if(empty($f_name) || empty($l_name) || empty($email) || empty($phone)){
+				header("location:../addStudent.php?emptyFields&f_name=".$f_name."&l_name=".$l_name."&email=".$email."&phone=".$phone);
 		}
-		else
-		{
-				echo "not logged in";
+		elseif(!filter_var($email,FILTER_VALIDATE_EMAIL) && (!preg_match("/^[a-zA-Z0-9]*$/",$username))){
+				header("location: ../signup.php?error=invalidmail");
+				exit();
 		}
+		else{
+						$sql = "INSERT into students(firstName,lastName,email,phoneNumber) values('$f_name','$l_name','$email','$phone')";
+						$stmt = $conn->prepare($sql);
+						if(!$stmt){
+								header("location: ../addStudent.php?error=sqlerror");
+								exit();
+						}
+						else{
+								$res = $conn->query($sql);
+								if($res){
+										header("location: ../addStudent.php?add=success");
+										exit();
+								}
+								else{
+										header("location: ../addStudent.php?error=sqlerror");
+										exit();
+								}
+						}
+		}
+}
 /* } */
 /* else{ */
 /* 		header("location:../login.php?next=addStudent"); */

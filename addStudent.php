@@ -38,19 +38,19 @@ if(isset($_GET['error'])){
 <form action="includes/addStudent.inc.php" method="POST" class="col s12">
  <div class="row">
 				<div class="input-field col s12 m6">
-					<input id="f_name" name="f_name" type="text" class="validate">
+				<input id="f_name" name="f_name" type="text" class="validate" value="<?php echo $_GET['f_name']; ?>">
 					<label for="f_name">First Name</label>
 				</div>
 				<div class="input-field col s12 m6">
-					<input id="l_name" name="l_name" type="text" class="validate">
+				<input id="l_name" name="l_name" type="text" class="validate" value="<?php echo $_GET['l_name']; ?>">
 					<label for="l_name">Last Name</label>
 				</div>
 				<div class="input-field col s12">
-					<input id="email" name="email" type="email" class="validate">
+				<input id="email" name="email" type="email" class="validate" value="<?php echo $_GET['email']; ?>">
 					<label for="email">E-mail</label>
 				</div>
 				<div class="input-field col s12">
-					<input id="phone" name="phone" type="text" class="validate">
+				<input id="phone" name="phone" type="text" class="validate" value="<?php echo $_GET['phone'] ?>">
 					<label for="phone">Phone Number</label>
 				</div>
 				<div class="col s12 center-align">
@@ -61,7 +61,6 @@ if(isset($_GET['error'])){
 </form>
 </div>
 </div>
-
 <?php
 include('footer.php');
 ?>
