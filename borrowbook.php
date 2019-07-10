@@ -44,6 +44,7 @@ else{
 </div>
 <div class="row">
  <input type="text" class="datepicker">
+<label for="dueDate">Due Date</label>
 </div>
 <div class="row">
 														<input placeholder="Book Id" name="bookId" type="text" class="validate" value="<?php echo  $_SESSION['bookId'];?>" style="display:none">
@@ -82,5 +83,12 @@ if(isset($_GET['studentId'])){
 		</div>
 </div>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script >
+const Calender = document.querySelector('.datepicker');
+M.Datepicker.init(Calender,{
+format:'dd/mm/yyyy',
+		showClearBtn:true
+});
+</script>
 <?php include("footer.php"); ?>
