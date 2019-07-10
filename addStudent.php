@@ -1,5 +1,12 @@
 <?php
 include('header.php');
+include('nav.php');
+
+if(!isset($_SESSION['username'])=='admin'){
+		header("location:./login.php?next=addStudent");
+}
+
+
 ?>
 
 <div class="container">
@@ -48,7 +55,7 @@ if(isset($_GET['error'])){
 				</div>
 				<div class="col s12 center-align">
 <a href="./index.php" class="btn" style="width:50%;" >Cancel</a>
-				<input class="btn" type="submit" name="signup-submit" value="Add" style="width:40%;">
+				<input class="btn" type="submit" name="addStudent" value="Add" style="width:40%;">
 </div>
 </div>
 </form>

@@ -25,15 +25,17 @@ if($result->num_rows>0){
 		echo "<h4>By: ".$row['author']."</h4>";
 		echo "<p>".$row['description']."</p>";
 		echo "<div class='row right-align'>";
-		echo "<div class='col'>";
-		echo "<a href='./borrowbook.php?id=".$row['id']."' class='btn'>Borrow</a>";
-		echo "</div>";
-		echo "<div class='col'>";
-		echo "<a href='./editbook.php?id=".$row['id']."' class='btn'>edit</a>";
-		echo "</div>";
-		echo "<div class='col'>";
-		echo "<a href='./includes/deletebook.inc.php?deletebook&id=".$id."' class='btn'>delete</a>";
-		echo "</div>";
+		if($_SESSION['username']){
+				echo "<div class='col'>";
+				echo "<a href='./borrowbook.php?id=".$row['id']."' class='btn'>Borrow</a>";
+				echo "</div>";
+				echo "<div class='col'>";
+				echo "<a href='./editbook.php?id=".$row['id']."' class='btn'>edit</a>";
+				echo "</div>";
+				echo "<div class='col'>";
+				echo "<a href='./includes/deletebook.inc.php?deletebook&id=".$id."' class='btn'>delete</a>";
+				echo "</div>";
+		}
 		echo "</div>";
 		echo "</div>";
 		echo "</div>";

@@ -1,8 +1,6 @@
 <?php
 if(isset($_POST['login-submit'])){
 		require 'dbh.inc.php';
-
-
 		$username = $_POST['username'];
 		$password = $_POST['password'];
 		if(empty($username) || empty($password)){
@@ -31,7 +29,15 @@ if(isset($_POST['login-submit'])){
 										session_start();
 										$_SESSION['username']=$username;
 										$_SESSION['password']=$result['password'];
-										header("location: ../index.php?login=success");
+										echo $_GET['next'];
+										if($_GET['next']){
+												header("location: ../index.php?".$_GET['next'].".php");
+												exit();
+										}
+										else{
+												header("location: ../index.php?login=success");
+												exit();
+										}
 								}
 						}
 						else{
