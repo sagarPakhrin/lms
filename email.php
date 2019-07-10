@@ -31,3 +31,5 @@ include("nav.php");
     </form>
   </div>
 </div>
+
+<?php include("footer.php"); ?>

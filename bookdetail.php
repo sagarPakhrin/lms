@@ -27,7 +27,7 @@ if($result->num_rows>0){
 		echo "<div class='row right-align'>";
 		if($_SESSION['username']){
 				echo "<div class='col'>";
-				echo "<a href='./borrowbook.php?id=".$row['id']."' class='btn'>Borrow</a>";
+				echo "<a href='./borrowbook.php?borrowBook&id=".$row['id']."' class='btn'>Borrow</a>";
 				echo "</div>";
 				echo "<div class='col'>";
 				echo "<a href='./editbook.php?id=".$row['id']."' class='btn'>edit</a>";
