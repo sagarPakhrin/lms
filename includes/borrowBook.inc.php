@@ -13,6 +13,7 @@ if(isset($_POST['search'])){
 				header("location: ../borrowbook.php?status=nosuchid&id=".$bookId);
 		}
 }
-else{
+if(isset($_POST['borrowBook'])){
+
 }
 ?>

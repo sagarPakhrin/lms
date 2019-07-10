@@ -56,7 +56,19 @@ else{
 														</div>
 												</div>
 										</div>
-										<div class="row">
+
+<?php
+if($_GET['status']=='success'){
+		$_SESSION['bookId'] = $_GET['id'];
+		$_SESSION['studentId'] = $_GET['studentId'];
+		echo '<div class="row">';
+		echo '<form action="./includes/borrowbook.php?bookId='.$_GET["id"].'&studentId='.$_GET["id"].'" method="POST">';
+		echo '<input type="submit" class="btn" name="" value="borrowBook">';
+		echo '</form>';
+		echo '</div>';
+}
+?>
+<div class="row">
 <?php
 if(isset($_GET['studentId'])){
 		require("./includes/dbh.inc.php");
