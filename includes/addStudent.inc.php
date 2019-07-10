@@ -25,7 +25,7 @@ if(isset($_POST['addStudent']))
 						else{
 								$res = $conn->query($sql);
 								if($res){
-										header("location: ../addStudent.php?add=success");
+										header("location: ../students.php");
 										exit();
 								}
 								else{
