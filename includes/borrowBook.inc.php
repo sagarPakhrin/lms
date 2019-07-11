@@ -14,6 +14,6 @@ if(isset($_POST['search'])){
 		}
 }
 if(isset($_POST['borrowBook'])){
-
+		echo "test";
 }
 ?>

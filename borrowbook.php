@@ -59,11 +59,10 @@ else{
 
 <?php
 if($_GET['status']=='success'){
-		$_SESSION['bookId'] = $_GET['id'];
-		$_SESSION['studentId'] = $_GET['studentId'];
+		session_start();
 		echo '<div class="row">';
-		echo '<form action="./includes/borrowbook.php?bookId='.$_GET["id"].'&studentId='.$_GET["id"].'" method="POST">';
-		echo '<input type="submit" class="btn" name="" value="borrowBook">';
+		echo '<form action="./includes/borrowbook.inc.php?bookId='.$_GET["id"].'&studentId='.$_GET["id"].'" method="POST">';
+		echo '<input type="submit" class="btn" name="borrowBook" value="borrowBook">';
 		echo '</form>';
 		echo '</div>';
 }

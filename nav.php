@@ -1,3 +1,4 @@
+<div class="navbar-fixed">
 <nav class="purple darken-5">
 		<div class="container">
 				<div class="nav-wrapper">
@@ -19,4 +20,6 @@ else{
 					</ul>
 				</div>
 		</div>
+
 </nav>
+</div>
