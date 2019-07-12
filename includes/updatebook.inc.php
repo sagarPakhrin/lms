@@ -23,6 +23,7 @@ if(isset($_POST['updateDetail'])){
 				$fileActualExt = strtolower(end($fileExt));
 
 				$allowed = array("jpg","png","jpeg","pdf","gif");
+
 				if(in_array($fileActualExt,$allowed)){
 						if($fileError === 0){
 								if($fileSize < 50000000){
@@ -38,11 +39,6 @@ if(isset($_POST['updateDetail'])){
 												else{
 														echo "Error: " . $sql . "<br>" . $conn->error;
 												}
-
-												/* $stmt->execute(); */
-												/* $stmt->close(); */
-												/* $conn->close(); */
-												/* header("location:../index.php"); */
 										}
 
 								}

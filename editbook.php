@@ -46,7 +46,7 @@ echo '
 			</div>
 </div>
 		<button class="btn" name="updateDetail">Update</button>
-<a href="bookdetail.php?id='.$row['id'].'" class="btn">Cancel</a>
+		<a href="bookdetail.php?id='.$row['id'].'" class="btn">Cancel</a>
 		</div>
 		</form>
 	</div>
