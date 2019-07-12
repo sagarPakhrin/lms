@@ -9,6 +9,7 @@ if(isset($_POST['updateDetail'])){
 		if(empty($title) || empty($author) || empty($description )){
 				header("location: ../editbook.php?id=".$id."&error=emptyfields&title=".$title."&author=".$author);
 				exit();
+				
 		}
 		else{
 				$file = $_FILES['imageURL'];
@@ -31,7 +32,7 @@ if(isset($_POST['updateDetail'])){
 										$fileDestination = '../uploads/'.$fileNameNew;
 										$fileNameForDataBase = 'uploads/'.$fileNameNew;
 										if(move_uploaded_file($fileTmpName,$fileDestination)){
-												$sql = "UPDATE books SET title='$title', author='$author',description='$description', imageURL=`$fileNameForDataBase`,WHERE id=$id";
+												$sql = "UPDATE books SET title='$title', author='$author',description='$description', imageURL='$fileNameForDataBase' WHERE id=$id";
 												if ($conn->query($sql) ) {
 														header("location: ../bookdetail.php?id=".$id);
 														exit();
@@ -45,4 +46,11 @@ if(isset($_POST['updateDetail'])){
 								else{
 										header("location:../index.php");
 								}
+						}
+				}
+				else{
+						header("location: ../editbook.php?id=".$id."&error=filesizenotallowed&title=".$title."&author=".$author);
+				}
+		}
+}
 ?>
