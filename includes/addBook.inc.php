@@ -29,7 +29,6 @@ if(isset($_POST['addBook'])){
 								if($fileSize < 50000000){
 										$fileNameNew = uniqid('',true).".".$fileActualExt;
 										$fileDestination = '../uploads/'.$fileNameNew;
-										die($fileDestination);
 										if(move_uploaded_file($fileTmpName,$fileDestination)){
 												$sql = "INSERT INTO books(title,author,description,imageURL) VALUES('$title','$author','$description','$fileDestination')";
 

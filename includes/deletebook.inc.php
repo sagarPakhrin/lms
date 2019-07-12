@@ -10,7 +10,7 @@ if ($conn->query($sql)) {
 }
 else{
 		$id = $_GET['id'];
-		header("locatino:../bookdetail.php?id=$id");
+		header("location:../bookdetail.php?id=$id");
 		exit();
 }
 ?>
