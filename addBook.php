@@ -35,7 +35,7 @@ if(!$_SESSION['username']){
 			<div class="file-path-wrapper">
 				<input class="file-path validate" type="text">
 			</div>
-		</div>
+</div>
 		<button class="btn" name="addBook">Add</button>
 		</div>
 		</form>

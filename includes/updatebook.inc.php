@@ -11,25 +11,42 @@ if(isset($_POST['updateDetail'])){
 				exit();
 		}
 		else{
+				$file = $_FILES['imageURL'];
+				$fileName = $_FILES['imageURL']['name'];
+				$fileTmpName = $_FILES['imageURL']['tmp_name'];
+				$fileSize=$_FILES['imageURL']['size'];
+				$fileError = $_FILES['imageURL']['error'];
+				$fileType = $_FILES['imageURL']['type'];
 
-				$sql = "UPDATE books SET title='$title', author='$author',description='$description' WHERE id=$id";
+				$fileExt = explode('.',$fileName);
 
-				if ($conn->query($sql) ) {
-						header("location: ../bookdetail.php?id=".$id);
-						exit();
-				}
-				else{
-						echo "Error: " . $sql . "<br>" . $conn->error;
-				}
+				$fileActualExt = strtolower(end($fileExt));
 
-				/* $stmt->execute(); */
-				/* $stmt->close(); */
-				/* $conn->close(); */
-				/* header("location:../index.php"); */
-		}
+				$allowed = array("jpg","png","jpeg","pdf","gif");
+				if(in_array($fileActualExt,$allowed)){
+						if($fileError === 0){
+								if($fileSize < 50000000){
+										$fileNameNew = uniqid('',true).".".$fileActualExt;
+										$fileDestination = '../uploads/'.$fileNameNew;
+										$fileNameForDataBase = 'uploads/'.$fileNameNew;
+										if(move_uploaded_file($fileTmpName,$fileDestination)){
+												$sql = "UPDATE books SET title='$title', author='$author',description='$description', imageURL=`$fileNameForDataBase`,WHERE id=$id";
+												if ($conn->query($sql) ) {
+														header("location: ../bookdetail.php?id=".$id);
+														exit();
+												}
+												else{
+														echo "Error: " . $sql . "<br>" . $conn->error;
+												}
 
-}
-else{
-		header("location:../index.php");
-}
+												/* $stmt->execute(); */
+												/* $stmt->close(); */
+												/* $conn->close(); */
+												/* header("location:../index.php"); */
+										}
+
+								}
+								else{
+										header("location:../index.php");
+								}
 ?>
