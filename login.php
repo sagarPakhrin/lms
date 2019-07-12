@@ -1,13 +1,5 @@
 <?php include("header.php"); 
 ?>
-<?php
-function validate($data){
-		$data = trim($data);
-		$data = htmlspecialchars($data);
-		$data = stripslashes($data);
-		return $data;
-}
-?>
 <center>
 	<h1>Login</h1>
 </center>

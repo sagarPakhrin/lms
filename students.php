@@ -1,5 +1,9 @@
-<?php include("header.php"); ?>
-<?php include("nav.php"); ?>
+<?php include("header.php");
+include("nav.php"); 
+if($_SESSION['username']!='admin'){
+		header("location:./login.php?next=students.php");
+}
+?>
 <div class="container">
 <div class="row">
 <?php
@@ -11,6 +15,7 @@ if ($result->num_rows>0){
 			echo '	<table>';
       echo '  <thead>';
       echo '    <tr>';
+      echo '        <th>ID</th>';
       echo '        <th>First Name</th>';
       echo '        <th>Last Name</th>';
       echo '        <th>Email</th>';
@@ -20,6 +25,7 @@ if ($result->num_rows>0){
 			echo '<tbody>';
 		while($row = $result->fetch_assoc()){
 			echo '<tr>';
+				echo '<td>'.$row["id"].'</td>';
 				echo '<td>'.$row['firstName'].'</td>';
 				echo '<td>'.$row['lastName'].'</td>';
 				echo '<td>'.$row['email'].'</td>';

@@ -24,7 +24,7 @@ if(isset($_POST['submitBorrow'])){
 				echo $sql;
 				$result = $conn->query($sql);
 				if($result){
-						header("location:../index.php");
+						header("location:../borrow_list.php");
 				}
 		}
 		else{
