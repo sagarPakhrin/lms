@@ -13,13 +13,13 @@ if ($result->num_rows>0){
 						<div class="card">
 						<div class="card-image">
 ';
-/* if($row['imageURL']) */
-/* { */
-/* 		echo '<img src="'.$row['imageURL'].'">'; */
-/* } else{ */
+if($row['imageURL'])
+{
+		echo '<img src="'.$row['imageURL'].'">';
+} else{
 
 		echo '<img src="./uploads/default.jpg">';
-/* } */
+}
 
 						echo '<span class="card-title">'.$row['title'].'</span>
 						</div>
