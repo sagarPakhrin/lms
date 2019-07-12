@@ -42,12 +42,24 @@ else{
 <div class="row">
 <input placeholder="Student Id" name="studentId" type="text" class="validate" required value="<?php echo $_GET['studentId']; ?>">
 </div>
+<?php
+if($_GET['status']=='success'){
+		session_start();
+		$_SESSION['bookId'] = $_GET['id'];
+		$_SESSION['studentId'] = $_GET['studentId'];
+		echo ' <div class="row">';
+		echo ' <input type="text" class="datepicker" name="dueDate">';
+		echo ' <label for="dueDate">Due Date</label>';
+		echo ' </div>';
+		echo '<div class="row">';
+		echo '<form action="./includes/borrowbook.inc.php?" method="POST">';
+		echo '<input type="submit" class="btn" name="submitBorrow" value="borrowBook">';
+		echo '</form>';
+		echo '</div>';
+}
+?>
 <div class="row">
- <input type="text" class="datepicker">
-<label for="dueDate">Due Date</label>
-</div>
-<div class="row">
-														<input placeholder="Book Id" name="bookId" type="text" class="validate" value="<?php echo  $_SESSION['bookId'];?>" style="display:none">
+<input placeholder="Book Id" name="bookId" type="text" class="validate" value="<?php echo  $_SESSION['bookId'];?>" style="display:none">
 </div>
 												</div>
 												<div class="input-field col s6">
@@ -57,16 +69,6 @@ else{
 												</div>
 										</div>
 
-<?php
-if($_GET['status']=='success'){
-		session_start();
-		echo '<div class="row">';
-		echo '<form action="./includes/borrowbook.inc.php?bookId='.$_GET["id"].'&studentId='.$_GET["id"].'" method="POST">';
-		echo '<input type="submit" class="btn" name="borrowBook" value="borrowBook">';
-		echo '</form>';
-		echo '</div>';
-}
-?>
 <div class="row">
 <?php
 if(isset($_GET['studentId'])){
@@ -98,7 +100,7 @@ if(isset($_GET['studentId'])){
 <script >
 const Calender = document.querySelector('.datepicker');
 M.Datepicker.init(Calender,{
-format:'dd/mm/yyyy',
+format:'yyyy/mm/dd',
 		showClearBtn:true
 });
 </script>

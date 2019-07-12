@@ -18,19 +18,32 @@ if(isset($_POST['addBook'])){
 				$fileSize=$_FILES['imageURL']['size'];
 				$fileError = $_FILES['imageURL']['error'];
 				$fileType = $_FILES['imageURL']['type'];
-				$moveFile = false;
 
 				$fileExt = explode('.',$fileName);
 
 				$fileActualExt = strtolower(end($fileExt));
 
-				$allowed = array("jpg","png","jpeg");
+				$allowed = array("jpg","png","jpeg","pdf","gif");
 				if(in_array($fileActualExt,$allowed)){
 						if($fileError === 0){
 								if($fileSize < 50000000){
 										$fileNameNew = uniqid('',true).".".$fileActualExt;
 										$fileDestination = '../uploads/'.$fileNameNew;
-										move_uploaded_file($fileTmpName,$fileDestination);
+										die($fileDestination);
+										if(move_uploaded_file($fileTmpName,$fileDestination)){
+												$sql = "INSERT INTO books(title,author,description,imageURL) VALUES('$title','$author','$description','$fileDestination')";
+
+												if ($conn->query($sql) ) {
+														echo "Book Added";
+														header("location:../index.php");
+												}
+												else{
+														echo "Error: " . $sql . "<br>" . $conn->error;
+												}
+										}
+										else{
+												die("test");
+										}
 								}
 								else{
 										header("location:../addBook.php?error=fileTooBig");
@@ -42,16 +55,6 @@ if(isset($_POST['addBook'])){
 				}
 				else{
 						header("location:../addBook.php?error=filenotassowed");
-				}
-
-				$sql = "INSERT INTO books(title,author,description,imageURL) VALUES('$title','$author','$description','$fileDestination')";
-
-				if ($conn->query($sql) ) {
-						echo "Book Added";
-						header("location:../index.php");
-				}
-				else{
-						echo "Error: " . $sql . "<br>" . $conn->error;
 				}
 
 				/* $stmt->execute(); */
