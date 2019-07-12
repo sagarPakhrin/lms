@@ -29,7 +29,6 @@ if(isset($_POST['login-submit'])){
 										session_start();
 										$_SESSION['username']=$username;
 										$_SESSION['password']=$result['password'];
-										die( $_GET['next']);
 										if($_GET['next']){
 												header("location:".$_GET['next']);
 												exit();
