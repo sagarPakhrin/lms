@@ -22,7 +22,7 @@ else{
 		$mail->SMTPSecure = 'tls';
 		$mail->Post = 587;
 		$mail->setFrom($gmail['Username'],'Sagar Lama');
-		$mail->addAddress($to,'Anil Rai');
+		$mail->addAddress($to,'Sagar Lama');
 		$mail->addReplyTo($Username,'Sagar Lama');
 
 		$mail->Subject = $subject;

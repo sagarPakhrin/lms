@@ -10,6 +10,7 @@ if(isset($_SESSION['username'])){
 		echo " <li><a href='addBook.php'>Add a Book</a></li> ";
 		echo " <li><a href='addStudent.php'>Add Student</a></li> ";
 		echo " <li><a href='students.php'>View students</a></li> ";
+		echo " <li><a href='borrow_list.php'>View Borrowed List</a></li> ";
 		echo " <li><a href='email.php'>Send Email</a></li> ";
 		echo " <li><a href='./includes/logout.inc.php?log_user_out'>Logout</a></li> ";
 }

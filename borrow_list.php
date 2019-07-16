@@ -31,7 +31,7 @@ if($stmt){
 								<p class="due_date">Due Date: '.$row['due_date'].'</p>
 								<p class="borrowId">Borrow Id: '.$row['id'].'</p>
 								<div class="right-align">
-																		<a href="./includes/returnbook.inc.php?id='.$row['id'].'" class="btn red darken-5">Returned</a>
+								<a href="./includes/returnbook.inc.php?returnbook&id='.$row['id'].'" class="btn red darken-5">Returned</a>
 								</div>
 						</div>';
 
