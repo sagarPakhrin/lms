@@ -9,7 +9,6 @@ if(isset($_POST['updateDetail'])){
 		if(empty($title) || empty($author) || empty($description )){
 				header("location: ../editbook.php?id=".$id."&error=emptyfields&title=".$title."&author=".$author);
 				exit();
-				
 		}
 		else{
 				$file = $_FILES['imageURL'];
