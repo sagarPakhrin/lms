@@ -34,6 +34,11 @@ if(isset($_POST['login-submit'])){
 												exit();
 										}
 										else{
+												if($_GET['next']){
+														$next= $_GET['next'];
+														header("location: ../".$next.".php");
+														exit();
+												}
 												header("location: ../index.php?login=success");
 												exit();
 										}

@@ -1,6 +1,9 @@
 <?php
 include("header.php");
 include("nav.php");
+if(!isset($_SESSION['username'])){
+		header("location:./login.php?next=email");
+}
 ?>
 
 <div class="container">
