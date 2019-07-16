@@ -89,7 +89,6 @@
   
 </style>
 <body>
-
 <div class="container main">
     <div class="row">
         <div class="col-md-6 ">
@@ -102,9 +101,9 @@
         <div class="col-md-3">
             <form action="./includes/login.inc.php" method="POST">
                 <label for="type">Sign In</label>
-                <input type="text" name="email" placeholder="Username" name="username">
+                <input type="text" name="username" placeholder="Username" name="username">
                 <input type="password" name="password" placeholder="Password">
-                <button type="button" class="sign">Login</button>
+								<input class="sign" type="submit" name="login-submit" value="login">
             </form>
         </div>
     </div>
