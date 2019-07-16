@@ -1,6 +1,6 @@
 <?php
 require("dbh.inc.php");
-/* if(isset($_SESSION['username'])=='admin'){ */
+require("emailAtRegister.php");
 if(isset($_POST['addStudent']))
 {
 		$f_name = $_POST['f_name'];
@@ -16,23 +16,25 @@ if(isset($_POST['addStudent']))
 				exit();
 		}
 		else{
-						$sql = "INSERT into students(firstName,lastName,email,phoneNumber) values('$f_name','$l_name','$email','$phone')";
-						$stmt = $conn->prepare($sql);
-						if(!$stmt){
-								header("location: ../addStudent.php?error=sqlerror");
-								exit();
-						}
-						else{
-								$res = $conn->query($sql);
-								if($res){
+				$sql = "INSERT into students(firstName,lastName,email,phoneNumber) values('$f_name','$l_name','$email','$phone')";
+				$stmt = $conn->prepare($sql);
+				if(!$stmt){
+						header("location: ../addStudent.php?error=sqlerror");
+						exit();
+				}
+				else{
+						$res = $conn->query($sql);
+						if($res){
+								if(sendEmail($email)){
 										header("location: ../students.php");
 										exit();
 								}
-								else{
-										header("location: ../addStudent.php?error=sqlerror");
-										exit();
-								}
 						}
+						else{
+								header("location: ../addStudent.php?error=sqlerror");
+								exit();
+						}
+				}
 		}
 }
 /* } */
