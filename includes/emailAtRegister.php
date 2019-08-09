@@ -1,13 +1,12 @@
 <?php
 function sendEmail($receiver){
-		$to = $receiver
+		$to = $receiver;
 		$subject = "Added to Librise Community";
 		$message = "Welcom to Librise Library";
 
 		require'./PHPMailer/PHPMailerAutoload.php';
 		require '/etc/myconfigfiles/emailDetails.php';
 		$mail = new PHPMailer;
-
 		$mail->IsSMTP();
 		$mail->Host = 'smtp.gmail.com';
 		$mail->SMTPDebug = 0;

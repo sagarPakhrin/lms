@@ -1,5 +1,13 @@
 <?php include("header.php"); ?>
 <?php include("nav.php"); ?>
+<?php 
+if(!isset($_SESSION['username'])){
+		header("location:./login.php");
+}
+?>
+
+
+
 <div class="container">
 <div class="row">
 <div class="container">

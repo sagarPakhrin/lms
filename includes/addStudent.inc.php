@@ -26,7 +26,7 @@ if(isset($_POST['addStudent']))
 						$res = $conn->query($sql);
 						if($res){
 								if(sendEmail($email)){
-										header("location: ../students.php");
+										header("location: ../students.php?registered&emailSent=1");
 										exit();
 								}
 						}
