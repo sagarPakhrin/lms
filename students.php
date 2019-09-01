@@ -1,6 +1,6 @@
 <?php include("header.php");
 include("nav.php"); 
-if($_SESSION['username']!='admin' || $_SESSION['username']!='sagar'){
+if($_SESSION['username']!='admin'){
 		header("location:./login.php?next=students.php");
 }
 ?>
