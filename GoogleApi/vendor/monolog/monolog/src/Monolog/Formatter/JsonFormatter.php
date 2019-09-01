@@ -12,8 +12,6 @@
 namespace Monolog\Formatter;
 
 use Exception;
-use Monolog\Utils;
-use Throwable;
 
 /**
  * Encodes whatever record data is passed to it as json
@@ -29,7 +27,6 @@ class JsonFormatter extends NormalizerFormatter
 
     protected $batchMode;
     protected $appendNewline;
-
     /**
      * @var bool
      */
@@ -37,7 +34,6 @@ class JsonFormatter extends NormalizerFormatter
 
     /**
      * @param int $batchMode
-     * @param bool $appendNewline
      */
     public function __construct($batchMode = self::BATCH_MODE_JSON, $appendNewline = true)
     {
@@ -139,29 +135,24 @@ class JsonFormatter extends NormalizerFormatter
      *
      * @return mixed
      */
-    protected function normalize($data, $depth = 0)
+    protected function normalize($data)
     {
-        if ($depth > 9) {
-            return 'Over 9 levels deep, aborting normalization';
-        }
-
         if (is_array($data) || $data instanceof \Traversable) {
             $normalized = array();
 
             $count = 1;
             foreach ($data as $key => $value) {
-                if ($count++ > 1000) {
-                    $normalized['...'] = 'Over 1000 items ('.count($data).' total), aborting normalization';
+                if ($count++ >= 1000) {
+                    $normalized['...'] = 'Over 1000 items, aborting normalization';
                     break;
                 }
-
-                $normalized[$key] = $this->normalize($value, $depth+1);
+                $normalized[$key] = $this->normalize($value);
             }
 
             return $normalized;
         }
 
-        if ($data instanceof Exception || $data instanceof Throwable) {
+        if ($data instanceof Exception) {
             return $this->normalizeException($data);
         }
 
@@ -179,12 +170,12 @@ class JsonFormatter extends NormalizerFormatter
     protected function normalizeException($e)
     {
         // TODO 2.0 only check for Throwable
-        if (!$e instanceof Exception && !$e instanceof Throwable) {
-            throw new \InvalidArgumentException('Exception/Throwable expected, got '.gettype($e).' / '.Utils::getClass($e));
+        if (!$e instanceof Exception && !$e instanceof \Throwable) {
+            throw new \InvalidArgumentException('Exception/Throwable expected, got '.gettype($e).' / '.get_class($e));
         }
 
         $data = array(
-            'class' => Utils::getClass($e),
+            'class' => get_class($e),
             'message' => $e->getMessage(),
             'code' => $e->getCode(),
             'file' => $e->getFile().':'.$e->getLine(),
@@ -195,9 +186,6 @@ class JsonFormatter extends NormalizerFormatter
             foreach ($trace as $frame) {
                 if (isset($frame['file'])) {
                     $data['trace'][] = $frame['file'].':'.$frame['line'];
-                } elseif (isset($frame['function']) && $frame['function'] === '{closure}') {
-                    // We should again normalize the frames, because it might contain invalid items
-                    $data['trace'][] = $frame['function'];
                 } else {
                     // We should again normalize the frames, because it might contain invalid items
                     $data['trace'][] = $this->normalize($frame);

@@ -33,17 +33,4 @@ class Guzzle6HttpHandler
     {
         return $this->client->send($request, $options);
     }
-
-    /**
-     * Accepts a PSR-7 request and an array of options and returns a PromiseInterface
-     *
-     * @param RequestInterface $request
-     * @param array $options
-     *
-     * @return \GuzzleHttp\Promise\Promise
-     */
-    public function async(RequestInterface $request, array $options = [])
-    {
-        return $this->client->sendAsync($request, $options);
-    }
 }

@@ -85,33 +85,6 @@ class NormalizerFormatterTest extends \PHPUnit_Framework_TestCase
         ), $formatted);
     }
 
-    public function testFormatSoapFaultException()
-    {
-        if (!class_exists('SoapFault')) {
-            $this->markTestSkipped('Requires the soap extension');
-        }
-
-        $formatter = new NormalizerFormatter('Y-m-d');
-        $e = new \SoapFault('foo', 'bar', 'hello', 'world');
-        $formatted = $formatter->format(array(
-            'exception' => $e,
-        ));
-
-        unset($formatted['exception']['trace']);
-
-        $this->assertEquals(array(
-            'exception' => array(
-                'class' => 'SoapFault',
-                'message' => 'bar',
-                'code' => 0,
-                'file' => $e->getFile().':'.$e->getLine(),
-                'faultcode' => 'foo',
-                'faultactor' => 'hello',
-                'detail' => 'world',
-            ),
-        ), $formatted);
-    }
-
     public function testFormatToStringExceptionHandle()
     {
         $formatter = new NormalizerFormatter('Y-m-d');
@@ -193,15 +166,6 @@ class NormalizerFormatterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(@json_encode(array($foo, $bar)), $res);
     }
 
-    public function testCanNormalizeReferences()
-    {
-        $formatter = new NormalizerFormatter();
-        $x = array('foo' => 'bar');
-        $y = array('x' => &$x);
-        $x['y'] = &$y;
-        $formatter->format($y);
-    }
-
     public function testIgnoresInvalidTypes()
     {
         // set up the recursion
@@ -224,42 +188,6 @@ class NormalizerFormatterTest extends \PHPUnit_Framework_TestCase
         restore_error_handler();
 
         $this->assertEquals(@json_encode(array($resource)), $res);
-    }
-
-    public function testNormalizeHandleLargeArraysWithExactly1000Items()
-    {
-        $formatter = new NormalizerFormatter();
-        $largeArray = range(1, 1000);
-
-        $res = $formatter->format(array(
-            'level_name' => 'CRITICAL',
-            'channel' => 'test',
-            'message' => 'bar',
-            'context' => array($largeArray),
-            'datetime' => new \DateTime,
-            'extra' => array(),
-        ));
-
-        $this->assertCount(1000, $res['context'][0]);
-        $this->assertArrayNotHasKey('...', $res['context'][0]);
-    }
-
-    public function testNormalizeHandleLargeArrays()
-    {
-        $formatter = new NormalizerFormatter();
-        $largeArray = range(1, 2000);
-
-        $res = $formatter->format(array(
-            'level_name' => 'CRITICAL',
-            'channel' => 'test',
-            'message' => 'bar',
-            'context' => array($largeArray),
-            'datetime' => new \DateTime,
-            'extra' => array(),
-        ));
-
-        $this->assertCount(1001, $res['context'][0]);
-        $this->assertEquals('Over 1000 items (2000 total), aborting normalization', $res['context'][0]['...']);
     }
 
     /**
@@ -407,29 +335,6 @@ class NormalizerFormatterTest extends \PHPUnit_Framework_TestCase
             $result['context']['exception']['trace'][0]
         );
     }
-
-    public function testExceptionTraceDoesNotLeakCallUserFuncArgs()
-    {
-        try {
-            $arg = new TestInfoLeak;
-            call_user_func(array($this, 'throwHelper'), $arg, $dt = new \DateTime());
-        } catch (\Exception $e) {
-        }
-
-        $formatter = new NormalizerFormatter();
-        $record = array('context' => array('exception' => $e));
-        $result = $formatter->format($record);
-
-        $this->assertSame(
-            '{"function":"throwHelper","class":"Monolog\\\\Formatter\\\\NormalizerFormatterTest","type":"->","args":["[object] (Monolog\\\\Formatter\\\\TestInfoLeak)","'.$dt->format('Y-m-d H:i:s').'"]}',
-            $result['context']['exception']['trace'][0]
-        );
-    }
-
-    private function throwHelper($arg)
-    {
-        throw new \RuntimeException('Thrown');
-    }
 }
 
 class TestFooNorm
@@ -469,13 +374,5 @@ class TestToStringError
     public function __toString()
     {
         throw new \RuntimeException('Could not convert to string');
-    }
-}
-
-class TestInfoLeak
-{
-    public function __toString()
-    {
-        return 'Sensitive information';
     }
 }

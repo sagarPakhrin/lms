@@ -17,9 +17,10 @@
 
 namespace Google\Auth;
 
-use Google\Auth\Credentials\InsecureCredentials;
 use Google\Auth\Credentials\ServiceAccountCredentials;
 use Google\Auth\Credentials\UserRefreshCredentials;
+use GuzzleHttp\Psr7;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * CredentialsLoader contains the behaviour used to locate and find default
@@ -27,11 +28,11 @@ use Google\Auth\Credentials\UserRefreshCredentials;
  */
 abstract class CredentialsLoader implements FetchAuthTokenInterface
 {
-    const TOKEN_CREDENTIAL_URI = 'https://oauth2.googleapis.com/token';
+    const TOKEN_CREDENTIAL_URI = 'https://www.googleapis.com/oauth2/v4/token';
     const ENV_VAR = 'GOOGLE_APPLICATION_CREDENTIALS';
     const WELL_KNOWN_PATH = 'gcloud/application_default_credentials.json';
     const NON_WINDOWS_WELL_KNOWN_PATH_BASE = '.config';
-    const AUTH_METADATA_KEY = 'authorization';
+    const AUTH_METADATA_KEY = 'Authorization';
 
     /**
      * @param string $cause
@@ -55,15 +56,18 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface
     }
 
     /**
-     * Load a JSON key from the path specified in the environment.
+     * Create a credentials instance from the path specified in the environment.
      *
-     * Load a JSON key from the path specified in the environment
+     * Creates a credentials instance from the path specified in the environment
      * variable GOOGLE_APPLICATION_CREDENTIALS. Return null if
      * GOOGLE_APPLICATION_CREDENTIALS is not specified.
      *
-     * @return array JSON key | null
+     * @param string|array scope the scope of the access request, expressed
+     *   either as an Array or as a space-delimited String.
+     *
+     * @return ServiceAccountCredentials Credentials instance | null
      */
-    public static function fromEnv()
+    public static function fromEnv($scope = null)
     {
         $path = getenv(self::ENV_VAR);
         if (empty($path)) {
@@ -73,12 +77,13 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface
             $cause = 'file ' . $path . ' does not exist';
             throw new \DomainException(self::unableToReadEnv($cause));
         }
-        $jsonKey = file_get_contents($path);
-        return json_decode($jsonKey, true);
+        $keyStream = Psr7\stream_for(file_get_contents($path));
+
+        return static::makeCredentials($scope, $keyStream);
     }
 
     /**
-     * Load a JSON key from a well known path.
+     * Create a credentials instance from a well known path.
      *
      * The well known path is OS dependent:
      * - windows: %APPDATA%/gcloud/application_default_credentials.json
@@ -86,9 +91,12 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface
      *
      * If the file does not exists, this returns null.
      *
-     * @return array JSON key | null
+     * @param string|array scope the scope of the access request, expressed
+     *   either as an Array or as a space-delimited String.
+     *
+     * @return ServiceAccountCredentials Credentials instance | null
      */
-    public static function fromWellKnownFile()
+    public static function fromWellKnownFile($scope = null)
     {
         $rootEnv = self::isOnWindows() ? 'APPDATA' : 'HOME';
         $path = [getenv($rootEnv)];
@@ -100,91 +108,34 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface
         if (!file_exists($path)) {
             return;
         }
-        $jsonKey = file_get_contents($path);
-        return json_decode($jsonKey, true);
+        $keyStream = Psr7\stream_for(file_get_contents($path));
+
+        return static::makeCredentials($scope, $keyStream);
     }
 
     /**
      * Create a new Credentials instance.
      *
-     * @param string|array $scope the scope of the access request, expressed
+     * @param string|array scope the scope of the access request, expressed
      *   either as an Array or as a space-delimited String.
-     * @param array $jsonKey the JSON credentials.
+     * @param StreamInterface $jsonKeyStream read it to get the JSON credentials.
      *
      * @return ServiceAccountCredentials|UserRefreshCredentials
      */
-    public static function makeCredentials($scope, array $jsonKey)
+    public static function makeCredentials($scope, StreamInterface $jsonKeyStream)
     {
+        $jsonKey = json_decode($jsonKeyStream->getContents(), true);
         if (!array_key_exists('type', $jsonKey)) {
             throw new \InvalidArgumentException('json key is missing the type field');
         }
 
         if ($jsonKey['type'] == 'service_account') {
             return new ServiceAccountCredentials($scope, $jsonKey);
-        }
-
-        if ($jsonKey['type'] == 'authorized_user') {
+        } elseif ($jsonKey['type'] == 'authorized_user') {
             return new UserRefreshCredentials($scope, $jsonKey);
+        } else {
+            throw new \InvalidArgumentException('invalid value in the type field');
         }
-
-        throw new \InvalidArgumentException('invalid value in the type field');
-    }
-
-    /**
-     * Create an authorized HTTP Client from an instance of FetchAuthTokenInterface.
-     *
-     * @param FetchAuthTokenInterface $fetcher is used to fetch the auth token
-     * @param array $httpClientOptoins (optional) Array of request options to apply.
-     * @param callable $httpHandler (optional) http client to fetch the token.
-     * @param callable $tokenCallback (optional) function to be called when a new token is fetched.
-     *
-     * @return \GuzzleHttp\Client
-     */
-    public static function makeHttpClient(
-        FetchAuthTokenInterface $fetcher,
-        array $httpClientOptions = [],
-        callable $httpHandler = null,
-        callable $tokenCallback = null
-    ) {
-        $version = \GuzzleHttp\ClientInterface::VERSION;
-
-        switch ($version[0]) {
-            case '5':
-                $client = new \GuzzleHttp\Client($httpClientOptions);
-                $client->setDefaultOption('auth', 'google_auth');
-                $subscriber = new Subscriber\AuthTokenSubscriber(
-                    $fetcher,
-                    $httpHandler,
-                    $tokenCallback
-                );
-                $client->getEmitter()->attach($subscriber);
-                return $client;
-            case '6':
-                $middleware = new Middleware\AuthTokenMiddleware(
-                    $fetcher,
-                    $httpHandler,
-                    $tokenCallback
-                );
-                $stack = \GuzzleHttp\HandlerStack::create();
-                $stack->push($middleware);
-
-                return new \GuzzleHttp\Client([
-                   'handler' => $stack,
-                   'auth' => 'google_auth',
-                ] + $httpClientOptions);
-            default:
-                throw new \Exception('Version not supported');
-        }
-    }
-
-    /**
-     * Create a new instance of InsecureCredentials.
-     *
-     * @return InsecureCredentials
-     */
-    public static function makeInsecureCredentials()
-    {
-        return new InsecureCredentials();
     }
 
     /**

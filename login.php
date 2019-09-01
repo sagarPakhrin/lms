@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<?php
+require_once "config.php";
+$loginURL = $gClient->createAuthUrl();
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +11,8 @@
     <title>IMG SVG</title>
 </head>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/materialize.min.css">
 <style>
     *{
         margin: 0;
@@ -86,6 +92,12 @@
 
         margin-top: 100px;
     }
+
+/* .loginWithGoogle{ */
+/* width:200px; */
+/* border:none; */
+/* background:#fff; */
+/* } */
   
 </style>
 <body>
@@ -105,6 +117,12 @@
                 <input type="password" name="password" placeholder="Password">
 								<input class="sign" type="submit" name="login-submit" value="login">
             </form>
+						<!--<input onclick="window.location = '<?php echo $loginURL?>'" class="loginWithGoogle" type="button" name="loginWithGoogle" value="Login With Google">
+-->
+<button class="googleButton btn waves-effect waves-light z-depth-3" onclick="window.location = '<?php echo $loginURL?>'">
+<img src="images/google.png" class="googleLogo" alt="">
+<span>Login With Google</span>
+</button>
         </div>
     </div>
 </div>

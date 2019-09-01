@@ -33,7 +33,7 @@ use Psr\Cache\CacheItemPoolInterface;
  *
  * Requests will be accessed with the authorization header:
  *
- * 'authorization' 'Bearer <access token obtained from the closure>'
+ * 'Authorization' 'Bearer <access token obtained from the closure>'
  */
 class ScopedAccessTokenSubscriber implements SubscriberInterface
 {
@@ -135,7 +135,7 @@ class ScopedAccessTokenSubscriber implements SubscriberInterface
             return;
         }
         $auth_header = 'Bearer ' . $this->fetchToken();
-        $request->setHeader('authorization', $auth_header);
+        $request->setHeader('Authorization', $auth_header);
     }
 
     /**
@@ -162,15 +162,14 @@ class ScopedAccessTokenSubscriber implements SubscriberInterface
      */
     private function fetchToken()
     {
-        $cacheKey = $this->getCacheKey();
-        $cached = $this->getCachedValue($cacheKey);
+        $cached = $this->getCachedValue();
 
         if (!empty($cached)) {
             return $cached;
         }
 
         $token = call_user_func($this->tokenFunc, $this->scopes);
-        $this->setCachedValue($cacheKey, $token);
+        $this->setCachedValue($token);
 
         return $token;
     }
