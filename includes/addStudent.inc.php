@@ -7,12 +7,22 @@ if(isset($_POST['addStudent']))
 		$l_name = $_POST['l_name'];
 		$email = $_POST['email'];
 		$phone = $_POST['phone'];
+		$secretKey = '6LfkDrYUAAAAABc_x14_bWpaVGxSu8CZEZbmQb4N';
+		$responseKey = $_POST['g-recaptcha-response'];
+		$remoteip = $_SERVER['REMOTE_ADDRESS'];
+		/* die(var_dump($responseKey)); */
 
+		$url = 'https://google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$responseKey.'&remoteip='.$remoteip;
+
+		$response = file_get_contents($url);
+		$response = json_decode($response);
+
+		/* die(var_dump($response)); */
 		if(empty($f_name) || empty($l_name) || empty($email) || empty($phone)){
 				header("location:../addStudent.php?emptyFields&f_name=".$f_name."&l_name=".$l_name."&email=".$email."&phone=".$phone);
 		}
 		elseif(!filter_var($email,FILTER_VALIDATE_EMAIL) && (!preg_match("/^[a-zA-Z0-9]*$/",$username))){
-				header("location: ../signup.php?error=invalidmail");
+				header("location: ../addStudent.php?error=invalidmail");
 				exit();
 		}
 		else{
@@ -25,10 +35,11 @@ if(isset($_POST['addStudent']))
 				else{
 						$res = $conn->query($sql);
 						if($res){
-								if(sendEmail($email)){
-										header("location: ../students.php?registered&emailSent=1");
-										exit();
-								}
+								/* if(sendEmail($email)){ */
+								/* 		header("location: ../students.php?registered&emailSent=1"); */
+								/* 		exit(); */
+								/* } */
+						header("location: ../students.php?registered&emailSent=1");
 						}
 						else{
 								header("location: ../addStudent.php?error=sqlerror");
@@ -39,6 +50,6 @@ if(isset($_POST['addStudent']))
 }
 /* } */
 /* else{ */
-/* 		header("location:../login.php?next=addStudent"); */
+/* 		header("location:../addStudent.php?next=addStudent"); */
 /* } */
 ?>

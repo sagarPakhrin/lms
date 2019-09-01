@@ -56,11 +56,15 @@ if(isset($_GET['error'])){
 				<div class="col s12 center-align">
 <a href="./index.php" class="btn" style="width:50%;" >Cancel</a>
 				<input class="btn" type="submit" name="addStudent" value="Add" style="width:40%;">
+<div class="recaptchaContainer">
+		<div class="g-recaptcha" data-sitekey="6LfkDrYUAAAAAHQLdSb-bt8a6IOutKN0l9Dhxw7N"></div>
+</div>
 </div>
 </div>
 </form>
 </div>
 </div>
+<script type="text/javascript" src='https://google.com/recaptcha/api.js'></script>
 <?php
 include('footer.php');
 ?>
